@@ -1,8 +1,10 @@
 package org.example;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class Product {
@@ -12,14 +14,6 @@ public class Product {
     private String description;
     private Category category;
 
-    public Product(int id, String name, double price,
-                   String description, Category category) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.category = category;
-    }
 
     @Override
     public String toString() {
