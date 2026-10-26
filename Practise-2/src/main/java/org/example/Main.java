@@ -1,17 +1,102 @@
 package org.example;
 
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    public static void main(String[] args) {
-        String filePath = "https://informer.com.ua/dut/java/pr2.csv";
-        TransactionCSVReader csvReader = new TransactionCSVReader();
-        List<Transaction> transactions = csvReader.readTransactions(filePath);
 
-        for (Transaction transaction : transactions) {
-            System.out.println(transaction);
+    public static void main(String[] args) {
+        String monthYear = "12-2023";
+        String start = "01-12-2023";
+        String end = "31-12-2023";
+
+        try {
+            List<String> lines;
+
+            if (args.length == 0) {
+                lines = TransactionCSVReader.readResource(
+                        "/transactions.csv"
+                );
+            } else {
+                lines = TransactionCSVReader.readLines(
+                        Path.of(args[0])
+                );
+            }
+
+            List<Transaction> transactions =
+                    TransactionCSVParser.parse(lines);
+
+            TransactionReportGenerator.printTransactions(transactions);
+
+            double balance =
+                    TransactionAnalyzer.calculateTotalBalance(transactions);
+
+            TransactionReportGenerator.printBalanceReport(balance);
+
+            int count = TransactionAnalyzer.countTransactionsByMonth(
+                    transactions,
+                    monthYear
+            );
+
+            TransactionReportGenerator.printTransactionsCountByMonth(
+                    monthYear,
+                    count
+            );
+
+            List<Transaction> topExpenses =
+                    TransactionAnalyzer.findTopExpenses(transactions);
+
+            TransactionReportGenerator.printTopExpensesReport(
+                    topExpenses
+            );
+
+            System.out.println(
+                    "\nПеріод: " + start + " — " + end
+            );
+
+            Transaction largest =
+                    TransactionAnalyzer.findLargestExpense(
+                            transactions,
+                            start,
+                            end
+                    );
+
+            TransactionReportGenerator.printExpense(
+                    "Найбільша витрата",
+                    largest
+            );
+
+            Transaction smallest =
+                    TransactionAnalyzer.findSmallestExpense(
+                            transactions,
+                            start,
+                            end
+                    );
+
+            TransactionReportGenerator.printExpense(
+                    "Найменша витрата",
+                    smallest
+            );
+
+            TransactionReportGenerator.printExpensesChart(
+                    "Витрати за категоріями",
+                    TransactionAnalyzer.calculateExpensesByCategory(
+                            transactions
+                    )
+            );
+
+            TransactionReportGenerator.printExpensesChart(
+                    "Витрати за місяцями",
+                    TransactionAnalyzer.calculateExpensesByMonth(
+                            transactions
+                    )
+            );
+
+        } catch (IOException | IllegalArgumentException e) {
+            System.err.println(
+                    "Не вдалося обробити файл: " + e.getMessage()
+            );
         }
     }
 }
