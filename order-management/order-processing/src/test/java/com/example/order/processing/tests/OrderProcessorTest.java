@@ -1,8 +1,10 @@
-package com.example.order.processing;
+package com.example.order.processing.tests;
 
 import com.example.order.model.Clothing;
 import com.example.order.model.Electronics;
 import com.example.order.model.Order;
+import com.example.order.processing.OrderProcessingException;
+import com.example.order.processing.OrderProcessor;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

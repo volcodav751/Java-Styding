@@ -1,9 +1,10 @@
-package com.example.order.threads;
+package com.example.order.threads.tests;
 
 import com.example.order.model.Electronics;
 import com.example.order.model.Order;
 import com.example.order.processing.OrderProcessor;
 import com.example.order.storage.OrderStorage;
+import com.example.order.threads.OrderTask;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
